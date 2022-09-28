@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const sabdaPaduaController = require("../controllers/sabdaPaduaController");
 const authController = require("../controllers/authController");
+const restrict = require("../middlewares/restrict");
 
 router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
 router.get("/auth/user", authController.index);
-router.get("/auth/whoami", authController.whoami);
+router.get("/auth/home", restrict, authController.whoami);
 
 //sabda-padua
 router.get("/sabda-padua", sabdaPaduaController.index);
