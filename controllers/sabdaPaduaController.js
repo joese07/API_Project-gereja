@@ -25,14 +25,19 @@ exports.show = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { title, content, picture } = req.body;
-  if (!title || !content || !picture) {
+  const { title, content, picture, author } = req.body;
+  if (!title || !content || !picture || !author) {
     return res.status(400).json({
       message: "failed to create new sabda-padua",
     });
   }
 
-  const sabda_padua = await Sabda_Padua.create({ title, content, picture });
+  const sabda_padua = await Sabda_Padua.create({
+    title,
+    content,
+    picture,
+    author,
+  });
   return res.status(201).json(sabda_padua);
 };
 
@@ -52,9 +57,9 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { title, content, picture } = req.body;
+  const { title, content, picture, author } = req.body;
 
-  if (!title || !content || !picture) {
+  if (!title || !content || !picture || !author) {
     return res.status(400).json({
       message: "Failed to Edit data",
     });
@@ -65,6 +70,7 @@ exports.update = async (req, res) => {
         title,
         content,
         picture,
+        author,
       },
       {
         where: {
