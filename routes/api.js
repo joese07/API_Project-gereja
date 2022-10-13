@@ -2,6 +2,7 @@ const router = require("express").Router();
 const sabdaPaduaController = require("../controllers/sabdaPaduaController");
 const authController = require("../controllers/authController");
 const galleryController = require("../controllers/galleryController");
+const pengumumanContrller = require("../controllers/pengumumanController");
 const restrict = require("../middlewares/restrict");
 
 router.post("/auth/login", authController.login);
@@ -20,5 +21,11 @@ router.delete("/sabda-padua/:id", restrict, sabdaPaduaController.destroy);
 router.get("/gallery", galleryController.index);
 router.post("/gallery", restrict, galleryController.store);
 router.delete("/gallery/:id", restrict, galleryController.destroy);
+
+//pengumuman
+router.get("/pengumuman", pengumumanContrller.index);
+router.post("/pengumuman", restrict, pengumumanContrller.store);
+router.put("/pengumuman/:id", pengumumanContrller.show);
+router.delete("/pengumuman/:id", restrict, pengumumanContrller.destroy);
 
 module.exports = router;
