@@ -25,7 +25,7 @@ exports.show = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { nama, category, isi, approved } = req.body;
+  const { nama, category, subcategory, isi, approved } = req.body;
   if (!nama || !category || !isi) {
     return res.status(400).json({
       message: "Failed to create pengumuman",
@@ -35,6 +35,7 @@ exports.store = async (req, res) => {
   const pengumuman = await Pengumuman.create({
     nama,
     category,
+    subcategory,
     isi,
     approved,
   });
@@ -58,7 +59,7 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { nama, category, isi, approved } = req.body;
+  const { nama, category, subcategory, isi, approved } = req.body;
 
   if (!nama || !category || !isi || !approved) {
     return res.status(400).json({
@@ -71,6 +72,7 @@ exports.update = async (req, res) => {
       {
         nama,
         category,
+        subcategory,
         isi,
         approved,
       },

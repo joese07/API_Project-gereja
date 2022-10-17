@@ -5,6 +5,7 @@ const galleryController = require("../controllers/galleryController");
 const pengumumanContrller = require("../controllers/pengumumanController");
 const restrict = require("../middlewares/restrict");
 
+//auth
 router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
 router.get("/auth/user", restrict, authController.index);
@@ -25,7 +26,8 @@ router.delete("/gallery/:id", restrict, galleryController.destroy);
 //pengumuman
 router.get("/pengumuman", pengumumanContrller.index);
 router.post("/pengumuman", restrict, pengumumanContrller.store);
-router.put("/pengumuman/:id", pengumumanContrller.show);
+router.get("/pengumuman/:id", pengumumanContrller.show);
+router.put("/pengumuman/:id", restrict, pengumumanContrller.update);
 router.delete("/pengumuman/:id", restrict, pengumumanContrller.destroy);
 
 module.exports = router;
