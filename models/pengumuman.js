@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       subcategory: DataTypes.STRING,
       isi: DataTypes.TEXT,
       approved: DataTypes.BOOLEAN,
+      author: DataTypes.STRING,
     },
     {
       sequelize,

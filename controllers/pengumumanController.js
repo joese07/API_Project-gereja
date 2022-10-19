@@ -25,8 +25,8 @@ exports.show = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { nama, category, subcategory, isi, approved } = req.body;
-  if (!nama || !category || !isi) {
+  const { nama, category, subcategory, isi, approved, author } = req.body;
+  if (!nama || !category || !isi || !author) {
     return res.status(400).json({
       message: "Failed to create pengumuman",
     });
@@ -38,6 +38,7 @@ exports.store = async (req, res) => {
     subcategory,
     isi,
     approved,
+    author,
   });
 
   return res.status(201).json(pengumuman);
@@ -59,9 +60,9 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { nama, category, subcategory, isi, approved } = req.body;
+  const { nama, category, subcategory, isi, approved, author } = req.body;
 
-  if (!nama || !category || !isi || !approved) {
+  if (!nama || !category || !isi || !approved || !author) {
     return res.status(400).json({
       message: "Failed to edit data",
     });
@@ -75,6 +76,7 @@ exports.update = async (req, res) => {
         subcategory,
         isi,
         approved,
+        author,
       },
       {
         where: {
