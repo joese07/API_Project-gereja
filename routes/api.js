@@ -34,7 +34,7 @@ router.delete("/pengumuman/:id", restrict, pengumumanController.destroy);
 //renungan
 router.get("/renungan", renunganController.index);
 router.post("/renungan", restrict, renunganController.store);
-router.get("/pengumuman/:id", renunganController.show);
-router.put("/pengumuman/:id", restrict, renunganController.update);
-router.delete("/pengumuman/:id", renunganController.destroy);
+router.get("/renungan/:id", renunganController.show);
+router.put("/renungan/:id", restrict, renunganController.update);
+router.delete("/renungan/:id", renunganController.destroy);
 module.exports = router;

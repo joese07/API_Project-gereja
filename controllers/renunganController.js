@@ -25,7 +25,7 @@ exports.show = async (req, res) => {
 
 exports.store = async (req, res) => {
   const { judul, isi, foto, status, author } = req.body;
-  if (!judul || !isi || !foto || !author || !status) {
+  if (!judul || !isi || !foto || !author) {
     return res.status(400).json({
       message: "failed to create new renungan",
     });
@@ -60,7 +60,7 @@ exports.update = async (req, res) => {
 
   const { judul, isi, foto, status, author } = req.body;
 
-  if (!judul || !isi || !foto || !status || !author) {
+  if (!judul || !isi || !foto || !author) {
     return res.status(400).json({
       message: "failed to edit data",
     });
