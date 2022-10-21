@@ -80,7 +80,7 @@ exports.update = async (req, res) => {
     );
   } catch ({ error }) {
     return res.status(422).json({
-      message: "Username/email already exist",
+      message: "Something Wrong..",
     });
   }
 
