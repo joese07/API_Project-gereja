@@ -10,8 +10,120 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
+    static associate(models) {
+      User.hasMany(models.ResetPassword, {
+        foreignKey: "id_user",
+        as: "resetpasswords",
+      });
       // define association here
+    }
+
+    static async forgetPassword_user({ id, newPassword, confirmPassword }) {
+      try {
+        const user = await this.findOne({ where: { id } });
+        if (!user) {
+          return Promise.reject({
+            message: "user not found !",
+            code: "auth/userp-not-found",
+          });
+        }
+
+        if (newPassword != confirmPassword) {
+          return Promise.reject({
+            message: "Confirm password Invalid",
+            code: "auth/confirm-password-invalid",
+          });
+        }
+
+        const encryptedPassword = await bcrypt.hash(newPassword, 10);
+        const updatePassword = await this.update(
+          {
+            password: encryptedPassword,
+          },
+          {
+            where: {
+              id: user.id,
+            },
+          }
+        );
+        return Promise.resolve({
+          message: "change password successfull",
+          code: "auth/success-changed-pass",
+        });
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    }
+
+    static async changePassword_user({
+      username,
+      password,
+      newPassword,
+      confirmPassword,
+    }) {
+      try {
+        const user = await this.findOne({ where: { username } });
+        if (!user) {
+          return Promise.reject({
+            message: "User not found!",
+            code: "auth/user-not-found",
+          });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+          return Promise.reject({
+            message: "Wrong old password",
+            code: "auth/wrong-old-password",
+          });
+        }
+
+        if (newPassword != confirmPassword) {
+          return Promise.reject({
+            message: "Confirm password Invalid",
+            code: "auth/confirm-password-invalid",
+          });
+        }
+
+        const encryptedPassword = await bcrypt.hash(newPassword, 10);
+        const updatePassword = await this.update(
+          {
+            password: encryptedPassword,
+          },
+          {
+            where: {
+              id: user.id,
+            },
+          }
+        );
+
+        return Promise.resolve({
+          message: "password changed",
+          code: "auth/success-changed-pass",
+        });
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    }
+
+    static async checkEmailForgotPassword({ email }) {
+      try {
+        const dataEmail = await this.findOne({ where: { email } });
+        if (!dataEmail) {
+          return Promise.reject({
+            message: "email invalid, check your email",
+            code: "auth/email-not-found",
+          });
+        }
+
+        return Promise.resolve({
+          dataEmail,
+          message: "email valid",
+          code: "auth/email-found",
+        });
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
 
     static async register({
