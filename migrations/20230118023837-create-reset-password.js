@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       expired: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       active: {
         type: Sequelize.BOOLEAN,

@@ -16,6 +16,16 @@ module.exports = (sequelize, DataTypes) => {
 
     static async reset_pass({ kode_reset }) {
       try {
+        const now = new Date();
+        const expiredDate = new Date();
+
+        expiredDate.setFullYear(now.getFullYear());
+        expiredDate.setMonth(now.getMonth());
+        expiredDate.setDate(now.getDate());
+        expiredDate.setHours(now.getHours());
+        expiredDate.setMinutes(now.getMinutes());
+        expiredDate.setSeconds(now.getSeconds());
+        const expires = expiredDate;
         const dataToken = await this.findOne({
           where: { kode_reset },
         });
@@ -26,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
             code: "auth/token-invalid",
           });
         } else if (dataToken.active == false) {
+          return Promise.reject({
+            message: "token invalid, check your token",
+            code: "auth/token-invalid",
+          });
+        } else if (now.getTime() > dataToken.expired.getTime()) {
           return Promise.reject({
             message: "token invalid, check your token",
             code: "auth/token-invalid",
@@ -59,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       id_user: DataTypes.INTEGER,
       email: DataTypes.STRING,
       kode_reset: DataTypes.STRING,
-      expired: DataTypes.STRING,
+      expired: DataTypes.DATE,
       active: DataTypes.BOOLEAN,
     },
     {
