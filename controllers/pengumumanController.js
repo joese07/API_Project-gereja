@@ -25,7 +25,7 @@ exports.show = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { nama, category, subcategory, isi, approved, author } = req.body;
+  const { nama, category, subcategory, isi, link, approved, author } = req.body;
   if (!nama || !category || !isi || !author) {
     return res.status(400).json({
       message: "Failed to create pengumuman",
@@ -39,6 +39,7 @@ exports.store = async (req, res) => {
     isi,
     approved,
     author,
+    link,
   });
 
   return res.status(201).json(pengumuman);
@@ -54,13 +55,13 @@ exports.update = async (req, res) => {
 
   const pengumuman = await Pengumuman.findByPk(id);
 
-  if (!Pengumuman) {
+  if (!pengumuman) {
     return res.status(404).json({
       message: "Pengumuman not found",
     });
   }
 
-  const { nama, category, subcategory, isi, approved, author } = req.body;
+  const { nama, category, subcategory, isi, link, approved, author } = req.body;
 
   if (!nama || !category || !isi || !approved || !author) {
     return res.status(400).json({
@@ -75,6 +76,7 @@ exports.update = async (req, res) => {
         category,
         subcategory,
         isi,
+        link,
         approved,
         author,
       },

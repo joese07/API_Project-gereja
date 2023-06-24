@@ -39,10 +39,10 @@ exports.forgetPassword = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const user = await User.register(req.body);
-    const { id, username } = user;
+    const { id, email } = user;
     res.json({
       id,
-      username,
+      email,
       accessToken: user.generateToken(),
     });
   } catch (error) {
@@ -53,10 +53,10 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await User.authenticate(req.body);
-    const { id, username } = user;
+    const { id, email } = user;
     res.json({
       id,
-      username,
+      email,
       accessToken: user.generateToken(),
     });
   } catch (error) {

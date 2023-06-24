@@ -20,6 +20,9 @@ module.exports = {
       isi: {
         type: Sequelize.TEXT,
       },
+      link: {
+        type: Sequelize.TEXT,
+      },
       approved: {
         type: Sequelize.BOOLEAN,
         default: false,

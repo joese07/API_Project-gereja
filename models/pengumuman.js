@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       category: DataTypes.STRING,
       subcategory: DataTypes.STRING,
       isi: DataTypes.TEXT,
+      link: DataTypes.TEXT,
       approved: DataTypes.BOOLEAN,
       author: DataTypes.STRING,
     },

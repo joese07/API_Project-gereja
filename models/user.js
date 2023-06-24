@@ -56,13 +56,13 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async changePassword_user({
-      username,
+      email,
       password,
       newPassword,
       confirmPassword,
     }) {
       try {
-        const user = await this.findOne({ where: { username } });
+        const user = await this.findOne({ where: { email } });
         if (!user) {
           return Promise.reject({
             message: "User not found!",
@@ -166,9 +166,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async authenticate({ username, password }) {
+    static async authenticate({ email, password }) {
       try {
-        const user = await this.findOne({ where: { username } });
+        const user = await this.findOne({ where: { email } });
         if (!user) {
           return Promise.reject({
             message: "User not found!",
