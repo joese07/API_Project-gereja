@@ -7,12 +7,12 @@ exports.index = async (req, res) => {
 };
 
 exports.show = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({
-      message: "ID must be a number",
-    });
-  }
+  const id = req.params.id;
+  // if (Number.isNaN(id)) {
+  //   return res.status(400).json({
+  //     message: "ID must be a number",
+  //   });
+  // }
 
   const sabda_padua = await Sabda_Padua.findByPk(id);
   if (!sabda_padua) {
@@ -32,22 +32,35 @@ exports.store = async (req, res) => {
     });
   }
 
+  const uuid = require("uuid");
+  let randomId = uuid.v4();
+
+  let cekId = await Sabda_Padua.findByPk(randomId);
+
+  // let cekId = '6b33bafb-6f2c-4c14-ab2e-8a5b1ee5472c';
+
+  for (let i = 0; i < cekId; i++) {
+    randomId;
+  }
+
   const sabda_padua = await Sabda_Padua.create({
+    id: randomId,
     title,
     content,
     picture,
     author,
   });
+
   return res.status(201).json(sabda_padua);
 };
 
 exports.update = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({
-      message: "ID must be a number",
-    });
-  }
+  const id = req.params.id;
+  // if (Number.isNaN(id)) {
+  //   return res.status(400).json({
+  //     message: "ID must be a number",
+  //   });
+  // }
 
   const sabda_padua = await Sabda_Padua.findByPk(id);
 
@@ -90,12 +103,12 @@ exports.update = async (req, res) => {
 };
 
 exports.destroy = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({
-      message: "ID Must be a number",
-    });
-  }
+  const id = req.params.id;
+  // if (Number.isNaN(id)) {
+  //   return res.status(400).json({
+  //     message: "ID Must be a number",
+  //   });
+  // }
 
   const sabda_padua = await Sabda_Padua.findByPk(id);
 

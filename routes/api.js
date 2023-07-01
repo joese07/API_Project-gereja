@@ -5,6 +5,7 @@ const galleryController = require("../controllers/galleryController");
 const pengumumanController = require("../controllers/pengumumanController");
 const renunganController = require("../controllers/renunganController");
 const resetPassword = require("../controllers/resetPasswordController");
+const beritaController = require("../controllers/beritaController");
 const restrict = require("../middlewares/restrict");
 
 //auth
@@ -41,6 +42,13 @@ router.post("/renungan", restrict, renunganController.store);
 router.get("/renungan/:id", renunganController.show);
 router.put("/renungan/:id", restrict, renunganController.update);
 router.delete("/renungan/:id", renunganController.destroy);
+
+//berita
+router.get("/berita", beritaController.index);
+router.post("/berita", restrict, beritaController.store);
+router.get("/berita/:id", beritaController.show);
+router.put("/berita/:id", restrict, beritaController.update);
+router.delete("/berita/:id", restrict, beritaController.destroy);
 
 //resetPassword
 
