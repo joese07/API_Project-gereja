@@ -20,6 +20,7 @@ router.post("/forgotPassword", authController.checkEmailForgot);
 //sabda-padua
 router.get("/sabda-padua", sabdaPaduaController.index);
 router.get("/sabda-padua/:id", sabdaPaduaController.show);
+router.post("/sabda-padua/search", sabdaPaduaController.search);
 router.post("/sabda-padua", restrict, sabdaPaduaController.store);
 router.put("/sabda-padua/:id", restrict, sabdaPaduaController.update);
 router.delete("/sabda-padua/:id", restrict, sabdaPaduaController.destroy);

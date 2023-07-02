@@ -1,5 +1,6 @@
 const e = require("express");
 const { Sabda_Padua } = require("../models");
+const { Op } = require("sequelize");
 
 exports.index = async (req, res) => {
   const sabda_padua = await Sabda_Padua.findAll();
@@ -22,6 +23,43 @@ exports.show = async (req, res) => {
   }
 
   return res.json(sabda_padua);
+};
+
+exports.search = async (req, res) => {
+  const { title, content } = req.body;
+  if (!title || !content) {
+    return res.status(400).json({
+      message: "please insert data",
+    });
+  }
+
+  const searchData = await Sabda_Padua.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.substring]: title,
+          },
+        },
+        {
+          content: {
+            [Op.substring]: content,
+          },
+        },
+      ],
+    },
+  });
+
+  if (searchData == "") {
+    return res.status(404).json({
+      message: "data not found",
+    });
+  }
+
+  return res.status(200).json({
+    message: "successfull",
+    data: searchData,
+  });
 };
 
 exports.store = async (req, res) => {
