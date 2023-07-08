@@ -3,7 +3,7 @@ const { Berita } = require("../models");
 
 exports.index = async (req, res) => {
   const berita = await Berita.findAll();
-  res.json(berita);
+  res.json(berita.reverse());
 };
 
 exports.show = async (req, res) => {
@@ -21,8 +21,8 @@ exports.show = async (req, res) => {
 
 exports.store = async (req, res) => {
   try {
-    const { title, content, picture, author, category } = req.body;
-    if (!title || !content || !picture || !author || !category) {
+    const { title, content, picture, author, category, periode } = req.body;
+    if (!title || !content || !picture || !author || !category || !periode) {
       return res.status(400).json({
         message: "Failed to created",
       });
@@ -43,10 +43,13 @@ exports.store = async (req, res) => {
       content,
       picture,
       author,
+      periode,
       category,
     });
 
-    return res.status(200).json(berita);
+    return res.status(200).json({
+      message: "successfully created",
+    });
   } catch ({ error }) {
     return res.status(400).json({
       message: "Something Wrong " + error.message,
@@ -65,9 +68,9 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { title, content, picture, category, author } = req.body;
+  const { title, content, picture, category, author, periode } = req.body;
 
-  if (!title || !content || !picture || !category || !author) {
+  if (!title || !content || !picture || !category || !author || !periode) {
     return res.status(400).json({
       message: "Failed to Edit data",
     });
@@ -81,6 +84,7 @@ exports.update = async (req, res) => {
         category,
         picture,
         author,
+        periode,
       },
       {
         where: {
