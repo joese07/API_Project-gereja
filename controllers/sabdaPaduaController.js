@@ -38,12 +38,12 @@ exports.search = async (req, res) => {
       [Op.or]: [
         {
           title: {
-            [Op.substring]: title,
+            [Op.iLike]: `%${title}%`,
           },
         },
         {
           content: {
-            [Op.substring]: content,
+            [Op.iLike]: `%${content}%`,
           },
         },
       ],

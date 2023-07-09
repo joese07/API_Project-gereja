@@ -48,6 +48,7 @@ router.delete("/renungan/:id", renunganController.destroy);
 router.get("/berita", beritaController.index);
 router.post("/berita", restrict, beritaController.store);
 router.get("/berita/:id", beritaController.show);
+router.post("/berita/search", beritaController.search);
 router.put("/berita/:id", restrict, beritaController.update);
 router.delete("/berita/:id", restrict, beritaController.destroy);
 

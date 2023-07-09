@@ -1,5 +1,6 @@
 const e = require("express");
-const { Berita } = require("../models");
+const { Berita, sequelize } = require("../models");
+const { Op, Sequelize } = require("sequelize");
 
 exports.index = async (req, res) => {
   const berita = await Berita.findAll();
@@ -17,6 +18,43 @@ exports.show = async (req, res) => {
   }
 
   return res.json(berita);
+};
+
+exports.search = async (req, res) => {
+  const { title, content } = req.body;
+  if (!title || !content) {
+    return res.status(400).json({
+      message: "plesase insert data",
+    });
+  }
+
+  const searchData = await Berita.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.iLike]: `%${title}%`,
+          },
+        },
+        {
+          content: {
+            [Op.iLike]: `%${content}%`,
+          },
+        },
+      ],
+    },
+  });
+
+  if (searchData == "") {
+    return res.status(404).json({
+      message: "data not found",
+    });
+  }
+
+  return res.status(200).json({
+    message: "successfull",
+    data: searchData,
+  });
 };
 
 exports.store = async (req, res) => {
