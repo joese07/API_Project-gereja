@@ -1,9 +1,15 @@
 const e = require("express");
-const { Berita, sequelize } = require("../models");
+const { Like_and_Comment, Berita, sequelize } = require("../models");
 const { Op, Sequelize } = require("sequelize");
 
 exports.index = async (req, res) => {
-  const berita = await Berita.findAll();
+  // const berita = await Berita.findAll();
+  const berita = await Berita.findAll({
+    include: {
+      model: Like_and_Comment,
+      as: "Like_and_Comments",
+    },
+  });
   res.json(berita.reverse());
 };
 
