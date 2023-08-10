@@ -65,8 +65,15 @@ exports.store = async (req, res) => {
           message: "data not found",
         });
       }
+
       await content.destroy();
+      const dataCount = await Like_and_Comment.findAll({
+        where: {
+          idContent: idContent,
+        },
+      });
       return res.status(201).json({
+        data: { count: dataCount.length },
         message: "anda unlike postingan",
       });
     } else {
@@ -87,7 +94,14 @@ exports.store = async (req, res) => {
         comment,
       });
 
+      const dataCount = await Like_and_Comment.findAll({
+        where: {
+          idContent: idContent,
+        },
+      });
+
       return res.status(200).json({
+        data: { count: dataCount.length },
         message: "anda like postingan",
       });
     }
