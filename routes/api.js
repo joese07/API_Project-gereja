@@ -6,6 +6,7 @@ const pengumumanController = require("../controllers/pengumumanController");
 const renunganController = require("../controllers/renunganController");
 const resetPassword = require("../controllers/resetPasswordController");
 const beritaController = require("../controllers/beritaController");
+const likeAndComment = require("../controllers/likeandcommentController");
 const restrict = require("../middlewares/restrict");
 
 //auth
@@ -51,6 +52,11 @@ router.get("/berita/:id", beritaController.show);
 router.post("/berita/search", beritaController.search);
 router.put("/berita/:id", restrict, beritaController.update);
 router.delete("/berita/:id", restrict, beritaController.destroy);
+
+//LikeandComment
+router.get("/likeandcomment/berita", likeAndComment.index);
+router.post("/likeandcomment/berita", likeAndComment.store);
+router.get("/likeandcomment/berita/:id", likeAndComment.showbyIdContent);
 
 //resetPassword
 

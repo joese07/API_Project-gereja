@@ -144,7 +144,17 @@ module.exports = (sequelize, DataTypes) => {
       }
       try {
         const encryptedPassword = await bcrypt.hash(password, 10);
+        const uuid = require("uuid");
+        let randomId = uuid.v4();
+
+        let cekId = await this.findByPk(randomId);
+
+        for (let i = 0; i < cekId; i++) {
+          randomId;
+        }
+
         const user = await this.create({
+          id: randomId,
           nama_lengkap,
           email,
           username,

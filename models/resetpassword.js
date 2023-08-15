@@ -71,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
 
   ResetPassword.init(
     {
-      id_user: DataTypes.INTEGER,
+      id_user: DataTypes.STRING,
       email: DataTypes.STRING,
       kode_reset: DataTypes.STRING,
       expired: DataTypes.DATE,

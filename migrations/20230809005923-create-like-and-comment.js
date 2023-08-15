@@ -1,38 +1,25 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Like_and_Comments", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING,
       },
-      nama_lengkap: {
-        type: Sequelize.STRING,
-      },
-      email: {
-        type: Sequelize.STRING,
-      },
-      username: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      password: {
+      idContent: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      tempat_lahir: {
+      countLike: {
+        type: Sequelize.INTEGER,
+      },
+      ip: {
         type: Sequelize.STRING,
       },
-      tanggal_lahir: {
-        type: Sequelize.DATEONLY,
-      },
-      alamat: {
-        type: Sequelize.STRING,
-      },
-      picture: {
-        type: Sequelize.STRING,
+      comment: {
+        type: Sequelize.TEXT,
+        default: null,
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Like_and_Comments");
   },
 };
