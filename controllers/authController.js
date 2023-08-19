@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, UserRoles } = require("../models");
 const { ResetPassword } = require("../models");
 const user = require("../models/user");
 
@@ -39,7 +39,21 @@ exports.forgetPassword = async (req, res) => {
 exports.register = async (req, res) => {
   try {
     const user = await User.register(req.body);
+
+    // const idRoles = await UserRoles.findOne({
+    //   where: {
+    //     iduser: user.id,
+    //   },
+    // });
+
+    // if (!idRoles) {
+    //   return res.status(400).json({
+    //     message: "check your data user",
+    //   });
+    // }
+
     const { id, email } = user;
+    // const role = idRoles.idroles;
     res.json({
       id,
       email,
@@ -53,9 +67,26 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await User.authenticate(req.body);
+
+    const idRoles = await UserRoles.findOne({
+      where: {
+        iduser: user.id,
+      },
+    });
+
+    if (!idRoles) {
+      return res.status(400).json({
+        message: "check your data user",
+      });
+    }
+
     const { id, email } = user;
+
+    const role = idRoles.idroles;
+
     res.json({
       id,
+      role,
       email,
       accessToken: user.generateToken(),
     });

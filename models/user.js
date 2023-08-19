@@ -1,4 +1,5 @@
 const { Model } = require("sequelize");
+const { UserRoles } = require("../models");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -14,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.ResetPassword, {
         foreignKey: "id_user",
         as: "resetpasswords",
-      });
+      }),
+        User.hasMany(models.UserRoles, {
+          foreignKey: "iduser",
+          as: "userroles",
+        });
       // define association here
     }
 
@@ -185,6 +190,19 @@ module.exports = (sequelize, DataTypes) => {
             code: "auth/user-not-found",
           });
         }
+
+        // const idRoles = await UserRoles.findOne({
+        //   where: {
+        //     iduser: user.id,
+        //   },
+        // });
+
+        // if (!idRoles) {
+        //   return Promise.reject({
+        //     message: "User not have role",
+        //     code: "auth/role-not-found",
+        //   });
+        // }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
