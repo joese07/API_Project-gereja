@@ -1,4 +1,5 @@
 const { UserRoles, User, Roles } = require("../models");
+const { Op } = require("sequelize");
 
 exports.index = async (req, res) => {
   const datauser = await UserRoles.findAll();
@@ -29,10 +30,13 @@ exports.store = async (req, res) => {
       });
     }
 
-    if (
-      cekRoleID.dataValues.id == idroles &&
-      cekUserId.dataValues.id == iduser
-    ) {
+    const cekExistRoleId = await UserRoles.findAll({
+      where: {
+        iduser,
+      },
+    });
+
+    if (cekExistRoleId.length > 0) {
       return res.status(400).json({
         message: "user and role exist, check your data",
       });

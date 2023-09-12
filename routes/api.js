@@ -67,6 +67,7 @@ router.post("/check_resetPassword", resetPassword.c_resetPassword);
 
 //Role
 router.get("/roles", restrict, roles.index);
+router.get("/roles/:id", restrict, roles.show);
 router.post("/roles", restrict, roles.store);
 
 //userRoles
