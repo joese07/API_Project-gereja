@@ -5,11 +5,18 @@ const { Op, Sequelize } = require("sequelize");
 exports.index = async (req, res) => {
   // const berita = await Berita.findAll();
   const berita = await Berita.findAll({
-    include: {
-      model: Like_and_Comment,
-      as: "Like_and_Comments",
+    attributes: {
+      include: [
+        [
+          sequelize.literal(
+            `(SELECT COUNT(*) FROM "Like_and_Comments" WHERE "Like_and_Comments"."idContent"="Berita".id)`
+          ),
+          "CountLikes",
+        ],
+      ],
     },
   });
+
   res.json(berita.reverse());
 };
 
@@ -35,6 +42,16 @@ exports.search = async (req, res) => {
   }
 
   const searchData = await Berita.findAll({
+    attributes: {
+      include: [
+        [
+          sequelize.literal(
+            `(SELECT COUNT(*) FROM "Like_and_Comments" WHERE "Like_and_Comments"."idContent"="Berita".id)`
+          ),
+          "CountLikes",
+        ],
+      ],
+    },
     where: {
       [Op.or]: [
         {

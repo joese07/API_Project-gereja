@@ -1,5 +1,4 @@
 const { Model } = require("sequelize");
-const { UserRoles } = require("../models");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -11,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
     static associate(models) {
       User.hasMany(models.ResetPassword, {
         foreignKey: "id_user",
@@ -183,26 +183,25 @@ module.exports = (sequelize, DataTypes) => {
 
     static async authenticate({ email, password }) {
       try {
-        const user = await this.findOne({ where: { email } });
+        const user = await this.findOne({
+          attributes: {
+            include: [
+              [
+                sequelize.literal(
+                  `(SELECT "UserRoles".idroles FROM "UserRoles" WHERE "UserRoles".iduser="User".id)`
+                ),
+                "role",
+              ],
+            ],
+          },
+          where: { email },
+        });
         if (!user) {
           return Promise.reject({
             message: "User not found!",
             code: "auth/user-not-found",
           });
         }
-
-        // const idRoles = await UserRoles.findOne({
-        //   where: {
-        //     iduser: user.id,
-        //   },
-        // });
-
-        // if (!idRoles) {
-        //   return Promise.reject({
-        //     message: "User not have role",
-        //     code: "auth/role-not-found",
-        //   });
-        // }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
@@ -212,6 +211,7 @@ module.exports = (sequelize, DataTypes) => {
           });
         }
 
+        // console.log(user.dataValues.role);
         return Promise.resolve(user);
       } catch (err) {
         return Promise.reject(err);
@@ -221,6 +221,7 @@ module.exports = (sequelize, DataTypes) => {
     generateToken() {
       const payload = {
         id: this.id,
+        role: this.dataValues.role,
         username: this.username,
       };
 

@@ -5,6 +5,18 @@ exports.index = async (req, res) => {
   res.json(roles);
 };
 
+exports.show = async (req, res) => {
+  const id = req.params.id;
+  const roles = await Roles.findByPk(id);
+  if (!roles) {
+    return res.status(404).json({
+      message: "role not found",
+    });
+  }
+
+  return res.json(roles);
+};
+
 exports.store = async (req, res) => {
   try {
     const { role, description } = req.body;

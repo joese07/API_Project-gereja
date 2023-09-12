@@ -76,7 +76,7 @@ exports.login = async (req, res) => {
 
     if (!idRoles) {
       return res.status(400).json({
-        message: "check your data user",
+        message: "Login Failed, check your data",
       });
     }
 
@@ -122,7 +122,15 @@ exports.checkEmailForgot = async (req, res) => {
   }
 };
 
-exports.whoami = (req, res) => {
+exports.whoami = async (req, res) => {
+  const idRoles = await UserRoles.findOne({
+    where: {
+      iduser: req.user.id,
+    },
+  });
+
+  const role = idRoles.idroles;
+  // console.log(role);
   const { password, ...currentUser } = req.user.dataValues;
-  res.json(currentUser);
+  res.json({ data: currentUser, roleid: role });
 };
