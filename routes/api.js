@@ -7,6 +7,8 @@ const renunganController = require("../controllers/renunganController");
 const resetPassword = require("../controllers/resetPasswordController");
 const beritaController = require("../controllers/beritaController");
 const likeAndComment = require("../controllers/likeandcommentController");
+const roles = require("../controllers/roleController");
+const usersRoles = require("../controllers/userRoleController");
 const restrict = require("../middlewares/restrict");
 
 //auth
@@ -62,5 +64,13 @@ router.get("/likeandcomment/berita/:id", likeAndComment.showbyIdContent);
 
 router.get("/reset_password", resetPassword.index);
 router.post("/check_resetPassword", resetPassword.c_resetPassword);
+
+//Role
+router.get("/roles", restrict, roles.index);
+router.post("/roles", restrict, roles.store);
+
+//userRoles
+router.get("/userroles", restrict, usersRoles.index);
+router.post("/userroles", restrict, usersRoles.store);
 
 module.exports = router;
