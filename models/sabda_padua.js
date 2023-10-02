@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       picture: DataTypes.STRING,
       author: DataTypes.STRING,
+      is_validation: DataTypes.BOOLEAN,
+      date_validation: DataTypes.DATE,
+      validation: DataTypes.STRING,
     },
     {
       sequelize,

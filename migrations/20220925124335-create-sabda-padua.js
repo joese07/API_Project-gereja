@@ -19,6 +19,16 @@ module.exports = {
       author: {
         type: Sequelize.STRING,
       },
+      is_validation: {
+        default: false,
+        type: Sequelize.BOOLEAN,
+      },
+      date_validation: {
+        type: Sequelize.DATE,
+      },
+      validation: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

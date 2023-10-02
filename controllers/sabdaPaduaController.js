@@ -63,7 +63,15 @@ exports.search = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { title, content, picture, author } = req.body;
+  const {
+    title,
+    content,
+    picture,
+    author,
+    is_validation,
+    date_validation,
+    validation,
+  } = req.body;
   if (!title || !content || !picture || !author) {
     return res.status(400).json({
       message: "failed to create new sabda-padua",
@@ -87,6 +95,9 @@ exports.store = async (req, res) => {
     content,
     picture,
     author,
+    is_validation: false,
+    date_validation: null,
+    validation: null,
   });
 
   return res.status(201).json(sabda_padua);
@@ -108,7 +119,15 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { title, content, picture, author } = req.body;
+  const {
+    title,
+    content,
+    picture,
+    author,
+    is_validation,
+    validation,
+    date_validation,
+  } = req.body;
 
   if (!title || !content || !picture || !author) {
     return res.status(400).json({
@@ -122,6 +141,9 @@ exports.update = async (req, res) => {
         content,
         picture,
         author,
+        is_validation,
+        validation,
+        date_validation,
       },
       {
         where: {

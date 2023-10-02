@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable("Renungans", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       judul: {
         type: Sequelize.STRING,
@@ -22,6 +21,16 @@ module.exports = {
         default: false,
       },
       author: {
+        type: Sequelize.STRING,
+      },
+      is_validation: {
+        type: Sequelize.BOOLEAN,
+        default: false,
+      },
+      date_validation: {
+        type: Sequelize.DATE,
+      },
+      validation: {
         type: Sequelize.STRING,
       },
       createdAt: {
