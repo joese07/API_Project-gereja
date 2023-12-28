@@ -17,9 +17,11 @@ router.post("/auth/login", authController.login);
 router.post("/auth/register", restrict, authController.register);
 router.post("/auth/changePassword", restrict, authController.changePassword);
 router.get("/auth/home", restrict, authController.whoami);
-router.get("/auth/user", restrict, authController.index);
+router.get("/auth/users", restrict, authController.index);
+router.get("/auth/user/:id", restrict, authController.show);
 router.post("/auth/forgot_password", authController.forgetPassword);
 router.post("/forgotPassword", authController.checkEmailForgot);
+router.delete("/auth/user/:id", restrict, authController.destroy);
 
 //sabda-padua
 router.get("/sabda-padua", sabdaPaduaController.index);

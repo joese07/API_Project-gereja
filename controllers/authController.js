@@ -15,21 +15,59 @@ exports.index = async (req, res) => {
 
   const cekUser = user.map((data) => {
     const dataUser = {
+      id: data.id,
       nama: data.nama_lengkap,
       email: data.email,
-      tempat_lahir: data.tempat_lahir,
+      username: data.username,
       tanggal_lahir: data.tanggal_lahir,
-      alamat: data.alamat,
-      picture: data.picture,
       createdAt: data.createdAt,
       updateAt: data.updatedAt,
-      userroles: data.userroles[0].roles.description,
+      userroles:
+        data.userroles[0] == null ? null : data.userroles[0].roles.description,
     };
     return dataUser;
   });
-  console.log(cekUser);
 
   res.status(200).json(cekUser);
+};
+
+exports.show = async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findOne({
+    where: { id: id },
+    include: {
+      model: UserRoles,
+      as: "userroles",
+      include: {
+        model: Roles,
+        as: "roles",
+      },
+    },
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      message: "Data not found",
+    });
+  }
+
+  const dataUser = {
+    id: user.id,
+    nama: user.nama_lengkap,
+    email: user.email,
+    username: user.username,
+    tempat_lahir: user.tempat_lahir,
+    tanggal_lahir: user.tanggal_lahir,
+    alamat: user.alamat,
+    picture: user.picture,
+    createdAt: user.createdAt,
+    updateAt: user.updatedAt,
+    userroles:
+      user.userroles[0] == null ? null : user.userroles[0].roles.description,
+  };
+
+  return res.json(dataUser);
 };
 
 exports.changePassword = async (req, res) => {
@@ -158,4 +196,33 @@ exports.whoami = async (req, res) => {
   // console.log(role);
   const { password, ...currentUser } = req.user.dataValues;
   res.json({ data: currentUser, roleid: role });
+};
+
+exports.destroy = async (req, res) => {
+  const id = req.params.id;
+
+  const dataUser = await User.findByPk(id);
+  const RolesUser = await UserRoles.findOne({
+    where: { iduser: id },
+  });
+
+  try {
+    if (!dataUser && !RolesUser) {
+      return res.status(404).json({
+        message: "data not found",
+      });
+    } else {
+      await dataUser.destroy();
+      await UserRoles.destroy({
+        where: {
+          iduser: id,
+        },
+      });
+      return res.status(200).json({ message: "sucess deleted" });
+    }
+  } catch (err) {
+    return res.status(422).json({
+      message: "delete failed",
+    });
+  }
 };
