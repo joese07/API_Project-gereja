@@ -2,7 +2,7 @@ const { UserRoles, User, Roles } = require("../models");
 const { Op } = require("sequelize");
 
 exports.index = async (req, res) => {
-  const datauser = await UserRoles.findAll();
+  const datauser = await UserRoles.findAll({});
   res.json(datauser);
 };
 

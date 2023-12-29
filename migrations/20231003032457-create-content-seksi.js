@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Sabda_Paduas", {
+    await queryInterface.createTable("Content_Seksis", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -16,17 +16,22 @@ module.exports = {
       picture: {
         type: Sequelize.STRING,
       },
+      status: {
+        type: Sequelize.BOOLEAN,
+      },
       author: {
         type: Sequelize.STRING,
       },
       is_validation: {
-        default: false,
         type: Sequelize.BOOLEAN,
       },
       date_validation: {
         type: Sequelize.DATE,
       },
       validation: {
+        type: Sequelize.STRING,
+      },
+      seksi: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -40,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Sabda_Paduas");
+    await queryInterface.dropTable("Content_Seksis");
   },
 };

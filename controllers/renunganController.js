@@ -6,12 +6,7 @@ exports.index = async (req, res) => {
 };
 
 exports.show = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({
-      message: "ID must be a number",
-    });
-  }
+  const id = req.params.id;
 
   const renungan = await Renungan.findByPk(id);
   if (!renungan) {
@@ -24,31 +19,48 @@ exports.show = async (req, res) => {
 };
 
 exports.store = async (req, res) => {
-  const { judul, isi, foto, status, author } = req.body;
+  const {
+    judul,
+    isi,
+    foto,
+    status,
+    author,
+    is_validation,
+    date_validation,
+    validation,
+  } = req.body;
   if (!judul || !isi || !foto || !author) {
     return res.status(400).json({
       message: "failed to create new renungan",
     });
   }
 
+  const uuid = require("uuid");
+  let randomId = uuid.v4();
+
+  let cekId = await Renungan.findByPk(randomId);
+
+  for (let i = 0; i < cekId; i++) {
+    randomId;
+  }
+
   const renungan = await Renungan.create({
+    id: randomId,
     judul,
     isi,
     foto,
     status,
     author,
+    is_validation: false,
+    date_validation: null,
+    validation: null,
   });
 
   return res.status(201).json(renungan);
 };
 
 exports.update = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
-    return res.status(400).json({
-      message: "Id must be a number",
-    });
-  }
+  const id = req.params.id;
 
   const renungan = await Renungan.findByPk(id);
 
@@ -58,7 +70,16 @@ exports.update = async (req, res) => {
     });
   }
 
-  const { judul, isi, foto, status, author } = req.body;
+  const {
+    judul,
+    isi,
+    foto,
+    status,
+    author,
+    is_validation,
+    validation,
+    date_validation,
+  } = req.body;
 
   if (!judul || !isi || !foto || !author) {
     return res.status(400).json({
@@ -73,6 +94,9 @@ exports.update = async (req, res) => {
         foto,
         status,
         author,
+        is_validation,
+        validation,
+        date_validation,
       },
       {
         where: {

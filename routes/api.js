@@ -9,16 +9,19 @@ const beritaController = require("../controllers/beritaController");
 const likeAndComment = require("../controllers/likeandcommentController");
 const roles = require("../controllers/roleController");
 const usersRoles = require("../controllers/userRoleController");
+const contentSeksi = require("../controllers/contentSeksiController");
 const restrict = require("../middlewares/restrict");
 
 //auth
 router.post("/auth/login", authController.login);
-router.post("/auth/register", authController.register);
+router.post("/auth/register", restrict, authController.register);
 router.post("/auth/changePassword", restrict, authController.changePassword);
-router.get("/auth/user", restrict, authController.index);
 router.get("/auth/home", restrict, authController.whoami);
+router.get("/auth/users", restrict, authController.index);
+router.get("/auth/user/:id", restrict, authController.show);
 router.post("/auth/forgot_password", authController.forgetPassword);
 router.post("/forgotPassword", authController.checkEmailForgot);
+router.delete("/auth/user/:id", restrict, authController.destroy);
 
 //sabda-padua
 router.get("/sabda-padua", sabdaPaduaController.index);
@@ -74,4 +77,12 @@ router.post("/roles", restrict, roles.store);
 router.get("/userroles", restrict, usersRoles.index);
 router.post("/userroles", restrict, usersRoles.store);
 
+//content-seksi
+router.get("/content_seksi", contentSeksi.index);
+router.post("/content_seksi", restrict, contentSeksi.store);
+router.get("/content_seksi/:id", contentSeksi.show);
+router.post("/content_seksi/search", contentSeksi.search);
+router.put("/content_seksi/edit/:id", restrict, contentSeksi.update);
+router.delete("/content_seksi/:id", restrict, contentSeksi.destroy);
+router.put("/content_seksi/status", restrict, contentSeksi.activeContent);
 module.exports = router;
