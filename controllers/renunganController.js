@@ -115,6 +115,60 @@ exports.update = async (req, res) => {
   });
 };
 
+exports.activeContent = async (req, res) => {
+  const { id, status } = req.body;
+
+  const checkId = await Renungan.findByPk(id);
+  const checkAll = await Renungan.findAll({
+    where: {
+      status: true,
+    },
+  });
+
+  if (!checkId) {
+    return res.status(404).json({
+      message: "id not found",
+    });
+  }
+
+  console.log(checkAll.length);
+
+  if (
+    checkId.dataValues.status == true ||
+    (checkId.dataValues.status == false && checkAll.length < 1)
+  ) {
+    try {
+      update_Renungan = await Renungan.update(
+        {
+          status,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+    } catch ({ error }) {
+      return res.status(422).json({
+        message: "Something wrong...",
+      });
+    }
+    const dataActive = await Renungan.findByPk(id);
+    return res.status(201).json({
+      message: "Successfull",
+      data: dataActive.dataValues.status,
+    });
+  } else if (checkId.dataValues.status == false && checkAll.length >= 1) {
+    return res.status(422).json({
+      message: "Error",
+    });
+  } else {
+    return res.status(422).json({
+      message: "Something wrong...",
+    });
+  }
+};
+
 exports.destroy = async (req, res) => {
   const id = Number(req.params.id);
   if (Number.isNaN(id)) {

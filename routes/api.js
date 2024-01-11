@@ -48,6 +48,7 @@ router.get("/renungan", renunganController.index);
 router.post("/renungan", restrict, renunganController.store);
 router.get("/renungan/:id", renunganController.show);
 router.put("/renungan/:id", restrict, renunganController.update);
+router.post("/activeRenungan", restrict, renunganController.activeContent);
 router.delete("/renungan/:id", renunganController.destroy);
 
 //berita
