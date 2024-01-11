@@ -132,7 +132,6 @@ exports.activeContent = async (req, res) => {
   }
 
   const dataActive = await Content_Seksi.findByPk(id);
-  console.log(dataActive);
 
   return res.status(201).json({
     message: "Successfull",
