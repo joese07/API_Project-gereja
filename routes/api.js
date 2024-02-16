@@ -21,6 +21,11 @@ router.get("/auth/users", restrict, authController.index);
 router.get("/auth/user/:id", restrict, authController.show);
 router.post("/auth/forgot_password", authController.forgetPassword);
 router.post("/forgotPassword", authController.checkEmailForgot);
+router.put(
+  "/user/update/picture",
+  restrict,
+  authController.changePictureProfile
+);
 router.delete("/auth/user/:id", restrict, authController.destroy);
 
 //sabda-padua

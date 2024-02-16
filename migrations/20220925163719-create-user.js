@@ -12,10 +12,11 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-      },
-      username: {
-        type: Sequelize.STRING,
         unique: true,
+        allowNull: false,
+      },
+      wilayah_lingkungan: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       password: {
