@@ -95,9 +95,15 @@ exports.store = async (req, res) => {
 };
 
 exports.activeContent = async (req, res) => {
-  const { id, status } = req.body;
+  const { id, status, seksi } = req.body;
 
   const updateActive = await Content_Seksi.findByPk(id);
+  const cekContent = await Content_Seksi.findAll({
+    where: {
+      seksi: seksi,
+      status: true,
+    },
+  });
 
   if (!updateActive) {
     return res.status(404).json({
@@ -111,6 +117,12 @@ exports.activeContent = async (req, res) => {
   ) {
     return res.status(422).json({
       message: "cek validation data",
+    });
+  }
+
+  if (cekContent.length >= 5 && updateActive.dataValues.status == false) {
+    return res.status(429).json({
+      message: "max content active only 5",
     });
   }
 
@@ -162,11 +174,24 @@ exports.update = async (req, res) => {
     validation,
   } = req.body;
 
+  const cekContent = await Content_Seksi.findAll({
+    where: {
+      seksi: seksi,
+      status: true,
+    },
+  });
+
   if (!title || !content || !picture || !seksi) {
     return res.status(400).json({
       message: "failed to edit data",
     });
   }
+  if (cekContent.length >= 5 && contentSeksi.dataValues.status == false) {
+    return res.status(429).json({
+      message: "max content active only 5",
+    });
+  }
+
   try {
     updatedContent_Seksi = await Content_Seksi.update(
       {

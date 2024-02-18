@@ -151,9 +151,6 @@ exports.login = async (req, res) => {
     const role = idRoles.idroles;
 
     res.json({
-      id,
-      role,
-      email,
       accessToken: user.generateToken(),
     });
   } catch (error) {
