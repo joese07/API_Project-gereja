@@ -131,8 +131,6 @@ exports.activeContent = async (req, res) => {
     });
   }
 
-  console.log(checkAll.length);
-
   if (
     checkId.dataValues.status == true ||
     (checkId.dataValues.status == false && checkAll.length < 1)
