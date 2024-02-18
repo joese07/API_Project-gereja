@@ -134,19 +134,33 @@ module.exports = (sequelize, DataTypes) => {
     static async register({
       nama_lengkap,
       email,
-      username,
+      wilayah_lingkungan,
       password,
       tempat_lahir,
       tanggal_lahir,
       alamat,
       picture,
     }) {
-      if (!username || !password) {
+      if (!email || !password) {
         return Promise.reject({
           message: "Failed to create new user",
           code: "auth/register-invalid",
         });
       }
+
+      const cekEmail = await this.findAll({
+        where: {
+          email: email,
+        },
+      });
+
+      if (cekEmail.length > 0) {
+        return Promise.reject({
+          message: "Email telah terdaftar",
+          code: "auth/register-invalid",
+        });
+      }
+
       try {
         const encryptedPassword = await bcrypt.hash(password, 10);
         const uuid = require("uuid");
@@ -162,7 +176,7 @@ module.exports = (sequelize, DataTypes) => {
           id: randomId,
           nama_lengkap,
           email,
-          username,
+          wilayah_lingkungan,
           password: encryptedPassword,
           tempat_lahir,
           tanggal_lahir,
@@ -222,7 +236,7 @@ module.exports = (sequelize, DataTypes) => {
       const payload = {
         id: this.id,
         role: this.dataValues.role,
-        username: this.username,
+        email: this.email,
       };
 
       const rahasia = "Ini rahasia ga boleh disebar-sebar";
@@ -235,7 +249,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       nama_lengkap: DataTypes.STRING,
       email: DataTypes.STRING,
-      username: DataTypes.STRING,
+      wilayah_lingkungan: DataTypes.STRING,
       password: DataTypes.STRING,
       tempat_lahir: DataTypes.STRING,
       tanggal_lahir: DataTypes.DATEONLY,

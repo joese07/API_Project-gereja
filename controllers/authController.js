@@ -18,7 +18,7 @@ exports.index = async (req, res) => {
       id: data.id,
       nama: data.nama_lengkap,
       email: data.email,
-      username: data.username,
+      wilayah_lingkungan: data.wilayah_lingkungan,
       tanggal_lahir: data.tanggal_lahir,
       createdAt: data.createdAt,
       updateAt: data.updatedAt,
@@ -56,13 +56,14 @@ exports.show = async (req, res) => {
     id: user.id,
     nama: user.nama_lengkap,
     email: user.email,
-    username: user.username,
+    wilayah_lingkungan: user.wilayah_lingkungan,
     tempat_lahir: user.tempat_lahir,
     tanggal_lahir: user.tanggal_lahir,
     alamat: user.alamat,
     picture: user.picture,
     createdAt: user.createdAt,
     updateAt: user.updatedAt,
+    password: user.password,
     userroles:
       user.userroles[0] == null ? null : user.userroles[0].roles.description,
   };
@@ -95,7 +96,9 @@ exports.forgetPassword = async (req, res) => {
       user,
     });
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(400).json({
+      message: error,
+    });
   }
 };
 
@@ -185,6 +188,37 @@ exports.checkEmailForgot = async (req, res) => {
   }
 };
 
+exports.changePictureProfile = async (req, res) => {
+  const { id, picture } = req.body;
+
+  const idUser = await User.findByPk(id);
+  if (!idUser) {
+    return res.status(404).json({
+      message: "not found",
+    });
+  }
+
+  try {
+    update_PhotoProfile = await User.update(
+      {
+        picture,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    return res.status(200).json({
+      message: "Success",
+    });
+  } catch ({ error }) {
+    return res.status(422).json({
+      message: "Something Wrong..",
+    });
+  }
+};
 exports.whoami = async (req, res) => {
   const idRoles = await UserRoles.findOne({
     where: {
