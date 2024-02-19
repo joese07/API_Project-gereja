@@ -63,7 +63,6 @@ exports.show = async (req, res) => {
     picture: user.picture,
     createdAt: user.createdAt,
     updateAt: user.updatedAt,
-    password: user.password,
     userroles:
       user.userroles[0] == null ? null : user.userroles[0].roles.description,
   };

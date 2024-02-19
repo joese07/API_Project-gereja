@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Roles } = require("../models");
 
 exports.index = async (req, res) => {
@@ -27,6 +28,18 @@ exports.store = async (req, res) => {
       });
     }
 
+    const cekRoles = await Roles.findOne({
+      where: {
+        [Op.or]: [{ role: role }, { description: description }],
+      },
+    });
+
+    if (cekRoles != null) {
+      return res.status(400).json({
+        message: "role or description exist",
+      });
+    }
+
     const uuid = require("uuid");
     let randomId = uuid.v4();
 
@@ -50,4 +63,21 @@ exports.store = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+exports.destroy = async (req, res) => {
+  const id = req.params.id;
+
+  const role = await Roles.findByPk(id);
+
+  if (!role) {
+    return res.status(404).json({
+      message: "Role not found",
+    });
+  }
+
+  await role.destroy();
+  return res.status(200).json({
+    message: "success deleted",
+  });
 };
