@@ -148,18 +148,18 @@ module.exports = (sequelize, DataTypes) => {
         });
       }
 
-      const cekEmail = await this.findAll({
-        where: {
-          email: email,
-        },
-      });
+      // const cekEmail = await this.findAll({
+      //   where: {
+      //     email: email,
+      //   },
+      // });
 
-      if (cekEmail.length > 0) {
-        return Promise.reject({
-          message: "Email telah terdaftar",
-          code: "auth/register-invalid",
-        });
-      }
+      // if (cekEmail.length > 0) {
+      //   return Promise.reject({
+      //     message: "Email telah terdaftar",
+      //     code: "auth/register-invalid",
+      //   });
+      // }
 
       try {
         const encryptedPassword = await bcrypt.hash(password, 10);
