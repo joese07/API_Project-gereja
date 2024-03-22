@@ -63,7 +63,7 @@ exports.update = async (req, res) => {
 
   const { nama, category, subcategory, isi, link, approved, author } = req.body;
 
-  if (!nama || !category || !isi || !approved || !author) {
+  if (!nama || !category || !isi || !author) {
     return res.status(400).json({
       message: "Failed to edit data",
     });
@@ -88,12 +88,51 @@ exports.update = async (req, res) => {
     );
   } catch ({ error }) {
     return res.status(422).json({
-      message: "somthing wrong..",
+      message: "something wrong..",
     });
   }
 
   return res.status(201).json({
     message: "Berhasil update data",
+  });
+};
+
+exports.activeContent = async (req, res) => {
+  const { id, approved } = req.body;
+
+  const checkId = await Pengumuman.findByPk(id);
+  const checkAll = await Pengumuman.findAll({
+    where: {
+      approved: true,
+    },
+  });
+
+  if (!checkId) {
+    return res.status(404).json({
+      message: "Id not found",
+    });
+  }
+
+  try {
+    update_Pengumuman = await Pengumuman.update(
+      {
+        approved,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+  } catch ({ error }) {
+    return res.status(422).json({
+      message: " 2 Something wrong...",
+    });
+  }
+  const dataActive = await Pengumuman.findByPk(id);
+  return res.status(201).json({
+    message: "successfull",
+    data: dataActive.dataValues.approved,
   });
 };
 

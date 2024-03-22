@@ -46,6 +46,7 @@ router.get("/pengumuman", pengumumanController.index);
 router.post("/pengumuman", restrict, pengumumanController.store);
 router.get("/pengumuman/:id", pengumumanController.show);
 router.put("/pengumuman/:id", restrict, pengumumanController.update);
+router.post("/pengumuman-status", restrict, pengumumanController.activeContent);
 router.delete("/pengumuman/:id", restrict, pengumumanController.destroy);
 
 //renungan

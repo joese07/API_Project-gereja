@@ -168,10 +168,10 @@ exports.activeContent = async (req, res) => {
 };
 
 exports.destroy = async (req, res) => {
-  const id = Number(req.params.id);
-  if (Number.isNaN(id)) {
+  const id = req.params.id;
+  if (!id) {
     return res.status(400).json({
-      message: "ID must be a number",
+      message: "not found",
     });
   }
 
